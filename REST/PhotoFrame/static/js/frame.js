@@ -126,28 +126,16 @@ function loadQueue() {
 $(document).ready(() => {
   // Load the queue of photos selected by the user for the photo
   loadQueue();
-
-  // Set up the fancybox image gallery.
-  $().fancybox({
-    selector: '[data-fancybox="gallery"]',
-    loop: true,
-    buttons: ['slideShow', 'fullScreen', 'close'],
-    image: {preload: true},
-    transitionEffect: 'fade',
-    transitionDuration: 1000,
-    fullScreen: {autoStart: false},
-    // Automatically advance after 3s to next photo.
-    slideShow: {autoStart: true, speed: 3000},
-    // Display the contents figcaption element as the caption of an image
-    caption: function(instance, item) {
-      return $(this).find('figcaption').html();
-    }
+  
+  $.get( "/fancyboxcfg", function( data ) {
+    // Set up the fancybox image gallery.
+    Fancybox.bind('[data-fancybox="gallery"]', data);
   });
 
   // Clicking the 'view fullscreen' button opens the gallery from the first
   // image.
   $('#startSlideshow')
-      .on('click', (e) => $('#images-container a').first().click());
+    .on('click', (e) => Fancybox.fromSelector('[data-fancybox="gallery"]') )
 
   // Clicking log out opens the log out screen.
   $('#logout').on('click', (e) => {
